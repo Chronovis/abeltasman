@@ -1,0 +1,52 @@
+.entry
+	top 10px
+	bottom 10px
+	right -400px
+	transition right 200ms ease-in-out
+
+	&.active
+		right 10px
+	
+	& > ul > li
+		&.heading
+			position relative
+			
+			.left
+				position absolute
+				left 10px
+				
+			.right
+				position absolute
+				right 10px
+				
+		&.quality
+			svg
+				height 40px
+				
+		&.coords
+			ul
+				list-style none
+				
+				li
+					label, span
+						inline-block()
+						
+					label
+						width 100px
+						color #AAA
+						
+					span, input
+						width 50px
+						text-align right
+			
+		&.pages
+			// TMP
+			max-height 200px
+			overflow-y auto
+			// TMP
+			ul
+				list-style none
+						
+				li.page
+					br
+						display none

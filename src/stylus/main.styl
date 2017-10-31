@@ -1,0 +1,62 @@
+@import './import/variables.styl'
+@import './import/functions.styl'
+
+@import './multiple-select'
+@import './entry'
+@import './coords-editor'
+@import './facsimiles'
+
+html, body, ul, input
+	margin 0
+	padding 0
+	font-family 'Quattrocento Sans',sans-serif
+	font-size 16px
+	
+html, body
+	overflow hidden
+	
+.ol-attribution
+	left .5em
+	right initial
+
+.modal
+	position absolute
+	background rgba(255, 255, 255, 0.7)
+	z-index 1
+	padding 20px
+	box-sizing border-box
+	width 400px
+	border-radius 4px
+	
+	ul.coordinates
+		list-style none
+		
+		li
+			label, span
+				inline-block()
+				
+			label
+				width 100px
+				color #AAA
+				
+			span, input
+				width 75px
+				text-align right
+
+	& > ul	
+		list-style none
+		
+		& > li
+			margin-bottom 10px
+			background rgba(255, 255, 255, 0.7)
+			padding 10px
+			border-radius 3px
+			
+			&.heading, h2
+				font-weight bold
+				text-align center
+				font-size 1.1em
+				
+			h2
+				margin 0
+				padding 0

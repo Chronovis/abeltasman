@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="http://openlayers.org/en/v3.0.0/css/ol.css" type="text/css">
+    <style>
+      .map {
+        height: 400px;
+        width: 100%;
+        /*display: none;*/
+      }
+    </style>
+    <script src="http://openlayers.org/en/v3.0.0/build/ol-debug.js" type="text/javascript"></script>
+    <title>OpenLayers 3 example</title>
+  </head>
+  <body>
+    <h2>My Map</h2>
+    <div id="map" class="map"></div>
+    <script type="text/javascript">
+      var map = new ol.Map({
+        target: 'map',
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.MapQuest({layer: 'sat'})
+          })
+        ],
+        view: new ol.View({
+          center: ol.proj.transform([37.41, 30], 'EPSG:4326', 'EPSG:3857'),
+          zoom: 4
+        })
+      });
+
+      var features = [];
+      var p1 = ol.proj.transform([10, 20], 'EPSG:4326', 'EPSG:3857')
+      var p2 = ol.proj.transform([40, 40], 'EPSG:4326', 'EPSG:3857')
+      var style = new ol.style.Style({
+          image: new ol.style.Circle({
+            fill: new ol.style.Fill({color: 'red'}),
+            radius: 5
+          })
+        });
+
+      var feat1 = new ol.Feature({
+        geometry: new ol.geom.Point(p2)
+      });
+      var feat2 = new ol.Feature({
+        geometry: new ol.geom.Point(p1)
+      });
+      feat1.setStyle(style);
+      feat2.setStyle(style);
+      features.push(feat1);
+      features.push(feat2);
+
+      var createPointLayer = function (features) {
+        var source = new ol.source.Vector({features: features});
+
+        return new ol.layer.Vector({source: source});
+      }
+
+
+      function toRadians(degrees) { 
+        return degrees * Math.PI / 180;
+      }
+
+      function toDegrees(radians) { 
+        return radians * 180 / Math.PI; 
+      }
+
+      function getMidpoint(c1, c2) {
+        a1 = toRadians(c1[1])
+        a2 = toRadians(c2[1])
+        b1 = toRadians(c1[0])
+        b2 = toRadians(c2[0])
+
+        var Bx = Math.cos(a2) * Math.cos(b2-b1);
+        var By = Math.cos(a2) * Math.sin(b2-b1);
+        var latMid = Math.atan2(Math.sin(a1) + Math.sin(a2),
+        Math.sqrt( (Math.cos(a1)+Bx)*(Math.cos(a1)+Bx) + By*By ) );
+        var lonMid = b1 + Math.atan2(By, Math.cos(a1) + Bx);
+
+        return [toDegrees(lonMid), toDegrees(latMid)]
+      }
+
+      var sphere = new ol.Sphere();
+      // var midp = sphere.midpoint([10, 20], [40, 40]);
+      var midp = getMidpoint([10, 20], [40, 40]);
+      console.log(midp)
+      midp = ol.proj.transform(midp, 'EPSG:4326', 'EPSG:3857');
+
+      var midStyle = new ol.style.Style({
+          image: new ol.style.Circle({
+            fill: new ol.style.Fill({color: 'yellow'}),
+            radius: 5
+          })
+        });
+      var midFeat = new ol.Feature({
+        geometry: new ol.geom.Point(midp)
+      });
+      midFeat.setStyle(midStyle);
+      features.push(midFeat);
+
+      map.addLayer(createPointLayer(features));
+    </script>
+  </body>
+</html>
