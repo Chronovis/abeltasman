@@ -1,8 +1,0 @@
-{
-    "local-modules": [
-    	"hiloupe"
-    ],
-    "exclude-libs": {
-    	"react": "./node_modules/react/dist/react-with-addons"
-    }
-}
